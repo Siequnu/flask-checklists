@@ -1,0 +1,36 @@
+{% extends "header.html" %} {% block app_content %}
+
+<link rel="stylesheet" href="/static/css/progress-circle.css">
+
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1><i class="fa fa-tasks"></i> Checklists</h1>
+    </div>
+  </div>
+  <hr>
+
+  <a href="{{url_for('checklists.add_checklist')}}" <button class="btn btn-lg btn-outline-success"><i
+      class="fa fa-plus-circle"></i> Add checklist</button></a>
+  <br><br>
+
+  <div class="row text-center">
+    {% for checklist in checklists %}
+    <div class="col-12 col-md-4">
+      <div class="counter">
+        <h2 class="timer count-title count-number">{{checklist.title}}</h2>
+        <div class="progress-circle progress-{{checklist.completed_progress_percentage}}">
+          <span>{{checklist.completed_progress_percentage}}</span></div>
+        <p class="card-text"><small class="text-muted">{{checklist.remaining_items}}
+            {{'item' if checklist.remaining_items == 1 else 'items'}} remaining</small></p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+
+
+</div>
+
+{% endblock %}
