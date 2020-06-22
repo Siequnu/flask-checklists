@@ -19,7 +19,7 @@ $('input:checkbox').change(function () {
 		success: function (data) {
 			toastr.success('Checklist updated.');
 			// Update the progress bar
-			// Send data via AJAX
+			// GET data via AJAX
 			$.ajax({
 				url: '/api/v1/checklist/' + checklist_id,
 				headers: { 'key': config.apiKey },

@@ -15,8 +15,12 @@
 <br>
 <div class="container">
   <div class="row">
-    <div class="col-12">
-      <h1><i class="fa fa-tasks"></i> {{checklist.title}}</h1>
+    <div class="col-12 col-lg-2">
+      <a href="{{url_for('checklists.view_checklists')}}" <button class="btn btn-lg btn-light"><i
+        class="fa fa-chevron-left"></i> Back</button></a>
+    </div>
+    <div class="col-12 col-lg-10">
+      <h1><i class="fa fa-clipboard-list"></i> {{checklist.title}}</h1>
     </div>
   </div>
   <hr>

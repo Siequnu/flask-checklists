@@ -18,16 +18,18 @@
   <div class="row text-center">
     {% for checklist in checklists %}
     <div class="col-12 col-md-4">
-      <div class="counter">
-        <h2 class="timer count-title count-number">{{checklist.title}}</h2>
-        <div class="progress-circle progress-{{checklist.completed_progress_percentage}}">
-          <span>{{checklist.completed_progress_percentage}}</span></div>
-        <p class="card-text"><small class="text-muted">{{checklist.remaining_items}}
-            {{'item' if checklist.remaining_items == 1 else 'items'}} remaining</small></p>
-      </div>
+      <a href="{{ url_for('checklists.view_checklist', checklist_id= checklist.id) }}">
+        <div class="counter">
+          <h2 class="timer count-title count-number">{{checklist.title}} <i class="fa fa-chevron-right"></i></h2>
+          <div class="progress-circle progress-{{checklist.completed_progress_percentage}}">
+            <span>{{checklist.completed_progress_percentage}}</span></div>
+          <p class="card-text"><small class="text-muted">{{checklist.remaining_items}}
+              {{'item' if checklist.remaining_items == 1 else 'items'}} remaining</small></p>
+      </a>
     </div>
-    {% endfor %}
   </div>
+  {% endfor %}
+</div>
 
 
 
