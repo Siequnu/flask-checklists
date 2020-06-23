@@ -18,7 +18,7 @@ $('input:checkbox').change(function () {
 		},
 		success: function (data) {
 			toastr.success('Checklist updated.');
-			// Update the progress bar
+			// Update the progress bar and remaining items count
 			// GET data via AJAX
 			$.ajax({
 				url: '/api/v1/checklist/' + checklist_id,
@@ -27,6 +27,12 @@ $('input:checkbox').change(function () {
 					$('#progress-circle').removeClass();
 					$('#progress-circle').addClass('progress-circle').addClass('progress-' + data.completed_percentage);
 					$('#progress-circle span').text(data.completed_percentage);
+
+					if (data.items_remaining == 1) {
+						$('.text-muted').text(data.items_remaining + ' item remaining');
+					} else {
+						$('.text-muted').text(data.items_remaining + ' items remaining');
+					}
 				 },
 			});
 			

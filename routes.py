@@ -57,6 +57,22 @@ def add_checklist():
 	else:
 		abort (403)
 
+
+# Redirect route to remove a checklist
+@bp.route("/remove/<int:checklist_id>")
+@login_required
+def remove_checklist(checklist_id):
+	if app.models.is_admin(current_user.username):
+		checklist = Checklist.query.get(checklist_id)
+		if checklist is None:
+			abort (404)
+		checklist.delete()
+		
+		flash ('Checklist removed', 'success')
+		return redirect(url_for('checklists.view_checklists'))
+	else:
+		abort (403)
+
 # Add a new checklist item
 @bp.route("/add/item/<checklist_id>", methods = ['GET', 'POST'])
 @login_required
@@ -79,6 +95,23 @@ def add_checklist_item(checklist_id):
 				flash ('Checklist item saved', 'success')
 				return redirect(url_for('checklists.view_checklist', checklist_id = checklist.id))
 			return render_template('add_goal.html', form = form, title = 'Add checklist item', checklist = checklist)
+	else:
+		abort (403)
+
+
+# Redirect route to remove a checklist item
+@bp.route("/remove/item/<int:checklist_item_id>")
+@login_required
+def remove_checklist_item(checklist_item_id):
+	if app.models.is_admin(current_user.username):
+		checklist_item = ChecklistItem.query.get(checklist_item_id)
+		if checklist_item is None:
+			abort (404)
+		checklist_id = checklist_item.id
+		checklist_item.delete()
+		
+		flash ('Checklist item removed', 'success')
+		return redirect(url_for('checklists.view_checklist', checklist_id = checklist_id))
 	else:
 		abort (403)
 

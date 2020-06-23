@@ -17,6 +17,11 @@ class Checklist (db.Model):
 		db.session.commit()
 
 	def delete (self):
+		# Find any checklist items tied to this list and delete them
+		items = ChecklistItem.query.filter_by(checklist_id = self.id)
+		for item in items:
+			item.delete()
+
 		db.session.delete(self)
 		db.session.commit()
 
@@ -30,6 +35,11 @@ class Checklist (db.Model):
 			return 100
 		else:
 			return int(len(completed_checklist_items)/len(all_checklist_items) * 100)
+
+	def get_remaining_items_count (self):
+		return len(ChecklistItem.query.filter_by(
+			checklist_id = self.id).filter_by(
+			completed = True).all())
 
 
 class ChecklistItem (db.Model):
@@ -66,7 +76,7 @@ def get_all_checklist_info (checklist_id = False):
 	checklists_array = []
 	for checklist in checklists:
 		checklist_dict = checklist.__dict__
-		checklist_dict['checklist_items'] = ChecklistItem.query.filter_by(checklist_id = checklist.id)
+		checklist_dict['checklist_items'] = ChecklistItem.query.filter_by(checklist_id = checklist.id).all()
 		checklist_dict['completed_progress_percentage'] = checklist.get_completed_progress_percentage ()
 		checklist_dict['remaining_items'] = len(ChecklistItem.query.filter_by(
 			checklist_id = checklist.id).filter_by(completed = False).all())

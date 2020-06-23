@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-12 col-lg-2">
       <a href="{{url_for('checklists.view_checklists')}}" <button class="btn btn-lg btn-light"><i
-        class="fa fa-chevron-left"></i> Back</button></a>
+          class="fa fa-chevron-left"></i> Back</button></a>
     </div>
     <div class="col-12 col-lg-10">
       <h1><i class="fa fa-clipboard-list"></i> {{checklist.title}}</h1>
@@ -27,15 +27,19 @@
 
   <!-- Admin can add a new checklist-->
   {% if current_user.is_admin %}
-  <a href="{{url_for('checklists.add_checklist_item', checklist_id = checklist.id)}}" <button
-    class="btn btn-lg btn-outline-success"><i class="fa fa-plus-circle"></i> Add new item</button></a>
+  <a href="{{url_for('checklists.add_checklist_item', checklist_id = checklist.id)}}"><button
+      class="btn btn-lg btn-outline-success"><i class="fa fa-plus-circle"></i> Add new item</button></a>
+  <a href="{{url_for('checklists.remove_checklist',checklist_id = checklist.id)}}"><button
+      class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> Delete checklist</button></a>
   <br><br>
   {% endif %}
 
-  <div class="row text-center">
+  <!-- Only show checklist items if they exist -->
+  {% if checklist_info.checklist_items|length > 0 %}
+  <div class="row">
 
     <!-- Widget with cirular progress bar-->
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-4 text-center">
       <div class="counter">
         <div id="progress-circle" class="progress-circle progress-{{checklist.completed_progress_percentage}}">
           <span>{{checklist_info.completed_progress_percentage}}</span></div>
@@ -54,6 +58,8 @@
               <input type="checkbox" {{ 'checked' if item.completed == True else '' }} class="custom-control-input"
                 id="{{item.id}}">
               <label class="custom-control-label" for="{{item.id}}">{{item.title}}</label>
+              <a href="{{url_for('checklists.remove_checklist_item',checklist_item_id = item.id)}}">
+                <button class="btn btn-sm btn-outline-warning float-right"><i class="fa fa-trash"></i></button></a>
             </div>
             {% endfor %}
           </ul>
@@ -62,5 +68,6 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 {% endblock %}
