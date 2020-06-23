@@ -11,10 +11,35 @@
   </div>
   <hr>
 
-  <a href="{{url_for('checklists.add_checklist')}}" <button class="btn btn-lg btn-outline-success"><i
-      class="fa fa-plus-circle"></i> Add checklist</button></a>
-  <br><br>
+  <a href="{{url_for('checklists.add_checklist_group')}}"><button class="btn btn-lg btn-outline-info"><i
+        class="fa fa-layer-group"></i> Create new checklist group</button></a>
+  <a href="{{url_for('checklists.add_checklist')}}"><button class="btn btn-lg btn-outline-success"><i
+        class="fa fa-plus-circle"></i> Add checklist</button></a>
+  <hr>
+  <h2>Checklist groups</h2>
+  {% if checklist_groups == [] %}
+  <p>You can group checklists to view aggregate data.</p>
+  {% else %}
+  <div class="row text-center">
+    {% for group in checklist_groups %}
+    <div class="col-12 col-md-6">
+      <a href="{{ url_for('checklists.view_checklist_group', checklist_group_id= group.id) }}">
+        <div class="counter">
+          <h2 class="timer count-title count-number">{{group.title}} <i class="fa fa-chevron-right"></i></h2>
+          <div class="progress-circle progress-{{group.group_completed_progress_percentage}}">
+            <span>{{group.group_completed_progress_percentage}}</span>
+          </div>
+          <p class="card-text"><small class="text-muted">{{group.remaining_items}}
+              {{'item' if group.remaining_items == 1 else 'items'}} remaining</small></p>
+        </div>
+      </a>
+    </div>
 
+    {% endfor %}
+  </div>
+  {% endif %}
+  <hr>
+  <h2>Checklists</h2>
   <div class="row text-center">
     {% for checklist in checklists %}
     <div class="col-12 col-md-4">

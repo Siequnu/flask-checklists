@@ -15,31 +15,49 @@
           class="fa fa-chevron-left"></i> Back</button></a>
     </div>
     <div class="col-12 col-lg-10">
-      <h1><i class="fa fa-clipboard-list"></i> {{checklist.title}}</h1>
+      <h1><i class="fa fa-clipboard-list"></i> {{checklist_group.title}}</h1>
     </div>
   </div>
   <hr>
 
   <!-- Admin can add a new checklist-->
   {% if current_user.is_admin %}
-  <a href="{{url_for('checklists.add_checklist_item', checklist_id = checklist.id)}}"><button
-      class="btn btn-lg btn-outline-success"><i class="fa fa-plus-circle"></i> Add new item</button></a>
-  <a href="{{url_for('checklists.remove_checklist',checklist_id = checklist.id)}}"><button
-      class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> Delete checklist</button></a>
-  <br><br>
+
+  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-users-group">
+    </i> Add checklists to this group
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for checklist in unadded_checklists %}
+    <a class="dropdown-item"
+      href="{{url_for('checklists.add_checklist_to_group', checklist_group_id = checklist_group.id, checklist_id = checklist.id)}}">{{checklist.title}}</a>
+    {% endfor %}
+  </div>
+
+  <a href="{{url_for('checklists.unset_checklist_group',checklist_group_id = checklist_group.id)}}"><button
+      class="btn btn-outline-warning"><i class="fa fa-trash"></i> Unset checklist group</button></a>
+  <a href="{{url_for('checklists.delete_checklist_group',checklist_group_id = checklist_group.id)}}"><button
+      class="btn btn-outline-danger float-right"><i class="fa fa-trash"></i> Delete checklist group</button></a>
+  <hr>
+  <p>{{checklist_group.description}}</p>
+  <p>created by {{checklist_group.user_id}}</p>
+  <hr>
   {% endif %}
 
   <!-- Only show checklist items if they exist -->
-  {% if checklist_info.checklist_items|length > 0 %}
-  <div id="checklist-{{checklist.id}}" class="row">
+  {% if checklist_group_info.checklists != [] %}
+  {% for checklist in checklist_group_info.checklists %}
+  <h3>{{checklist.title}}</h3>
+  <div id=checklist-{{checklist.id}} class="row">
 
     <!-- Widget with cirular progress bar-->
     <div class="col-12 col-md-4 text-center">
       <div class="counter">
         <div id="progress-circle" class="progress-circle progress-{{checklist.completed_progress_percentage}}">
-          <span>{{checklist_info.completed_progress_percentage}}</span></div>
-        <p class="card-text"><small class="text-muted">{{checklist_info.remaining_items}}
-            {{'item' if checklist_info.remaining_items == 1 else 'items'}} remaining</small></p>
+          <span>{{checklist.completed_progress_percentage}}</span></div>
+        <p class="card-text"><small class="text-muted">{{checklist.remaining_items}}
+            {{'item' if checklist.remaining_items == 1 else 'items'}} remaining</small></p>
       </div>
     </div>
 
@@ -48,7 +66,7 @@
       <div class="counter">
         <div class="container">
           <ul class="list-group">
-            {% for item in checklist_info.checklist_items %}
+            {% for item in checklist.checklist_items %}
             <div class="custom-control custom-checkbox">
               <input type="checkbox" {{ 'checked' if item.completed == True else '' }} class="custom-control-input"
                 id="checklist-item-{{item.id}}">
@@ -62,7 +80,7 @@
       </div>
     </div>
   </div>
-</div>
-{% endif %}
+  {% endfor %}
+  {% endif %}
 
 {% endblock %}

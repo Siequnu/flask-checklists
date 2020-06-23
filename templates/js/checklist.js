@@ -1,7 +1,9 @@
 // On changing a tick box, send API request to update database
 $('input:checkbox').change(function () {
-	var id = this.id;
+	var id = this.id.replace(/checklist-item-/g,'');
 	var completed = this.checked;
+	// Very ugly. Is there a better way to traverse the DOM in an ascending fashion?
+	var checklist_id = $(this).parent().parent().parent().parent().parent().parent().prop('id').replace(/checklist-/g, '');
 
 	// PUT data via AJAX
 	$.ajax({
@@ -24,14 +26,14 @@ $('input:checkbox').change(function () {
 				url: '/api/v1/checklist/' + checklist_id,
 				headers: { 'key': config.apiKey },
 				success: function (data) {
-					$('#progress-circle').removeClass();
-					$('#progress-circle').addClass('progress-circle').addClass('progress-' + data.completed_percentage);
-					$('#progress-circle span').text(data.completed_percentage);
+					$('#checklist-' + checklist_id + ' #progress-circle').removeClass();
+					$('#checklist-' + checklist_id + ' #progress-circle').addClass('progress-circle').addClass('progress-' + data.completed_percentage);
+					$('#checklist-' + checklist_id + ' #progress-circle span').text(data.completed_percentage);
 
 					if (data.items_remaining == 1) {
-						$('.text-muted').text(data.items_remaining + ' item remaining');
+						$('#checklist-' + checklist_id + ' .text-muted').text(data.items_remaining + ' item remaining');
 					} else {
-						$('.text-muted').text(data.items_remaining + ' items remaining');
+						$('#checklist-' + checklist_id + ' .text-muted').text(data.items_remaining + ' items remaining');
 					}
 				 },
 			});

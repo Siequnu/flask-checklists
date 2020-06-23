@@ -15,3 +15,11 @@ class ChecklistItemForm(FlaskForm):
     description = StringField('Checklist item description:', validators=[
                               DataRequired(), Length(max=250)])
     submit = SubmitField('Save checklist item')
+
+
+class ChecklistGroupForm(FlaskForm):
+    title = StringField('Checklist group title:', validators=[
+                        DataRequired(), Length(max=140)])
+    description = StringField('Checklist group description:', validators=[
+                              DataRequired(), Length(max=250)])
+    submit = SubmitField('Save checklist group')
