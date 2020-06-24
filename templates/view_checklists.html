@@ -15,49 +15,67 @@
         class="fa fa-layer-group"></i> Create new checklist group</button></a>
   <a href="{{url_for('checklists.add_checklist')}}"><button class="btn btn-lg btn-outline-success"><i
         class="fa fa-plus-circle"></i> Add checklist</button></a>
-  <hr>
-  <h2>Checklist groups</h2>
+
+  <h2 class="mt-3">Checklist groups</h2>
   {% if checklist_groups == [] %}
   <p>You can group checklists to view aggregate data.</p>
   {% else %}
   <div class="row text-center">
     {% for group in checklist_groups %}
     <div class="col-12 col-md-6">
-      <a href="{{ url_for('checklists.view_checklist_group', checklist_group_id= group.id) }}">
+      <a class="text-dark" href="{{ url_for('checklists.view_checklist_group', checklist_group_id= group.id) }}">
         <div class="counter">
-          <h2 class="timer count-title count-number">{{group.title}} <i class="fa fa-chevron-right"></i></h2>
-          <div class="progress-circle progress-{{group.group_completed_progress_percentage}}">
-            <span>{{group.group_completed_progress_percentage}}</span>
-          </div>
-          <p class="card-text"><small class="text-muted">{{group.remaining_items}}
-              {{'item' if group.remaining_items == 1 else 'items'}} remaining</small></p>
-        </div>
+          <h3>{{group.title}} <i class="fa fa-chevron-right"></i></h3>
+          <h6>{{group.description}}</h6>
       </a>
+      <div class="container mt-3">
+        <div class="progress" style="height:40px">
+          {% for checklist in group.checklists %}
+          <div class="progress-bar" role="progressbar"
+            style="width: {{checklist.completed_progress_percentage/2}}%; background-color: hsl({{checklist.hue}}, {{checklist.saturation}}%, {{checklist.lightness}}%)"
+            data-toggle="popover" data-trigger="hover" title="{{checklist.title}}"
+            data-content="{{checklist.description}}">
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="mt-3">{{group.group_completed_progress_percentage}}% completed</div>
+      </div>
+      <p class="card-text"><small class="text-muted">{{group.group_remaining_items_count}}
+          {{'item' if group.group_remaining_items_count == 1 else 'items'}} remaining</small>
+      </p>
     </div>
 
-    {% endfor %}
   </div>
-  {% endif %}
-  <hr>
-  <h2>Checklists</h2>
-  <div class="row text-center">
-    {% for checklist in checklists %}
-    <div class="col-12 col-md-4">
-      <a href="{{ url_for('checklists.view_checklist', checklist_id= checklist.id) }}">
-        <div class="counter">
-          <h2 class="timer count-title count-number">{{checklist.title}} <i class="fa fa-chevron-right"></i></h2>
-          <div class="progress-circle progress-{{checklist.completed_progress_percentage}}">
-            <span>{{checklist.completed_progress_percentage}}</span></div>
-          <p class="card-text"><small class="text-muted">{{checklist.remaining_items}}
-              {{'item' if checklist.remaining_items == 1 else 'items'}} remaining</small></p>
-      </a>
-    </div>
-  </div>
+
   {% endfor %}
 </div>
-
-
+{% endif %}
+<hr>
+<h2>Checklists</h2>
+<div class="row text-center">
+  {% for checklist in checklists %}
+  <div class="col-12 col-md-4">
+    <a class="text-dark" href="{{ url_for('checklists.view_checklist', checklist_id= checklist.id) }}">
+      <div class="counter">
+        <h3>{{checklist.title}} <i class="fa fa-chevron-right"></i></h3>
+        <div class="progress-circle progress-{{checklist.completed_progress_percentage}}"
+          style="background-image: none; color: #ffffff">
+          <span>{{checklist.completed_progress_percentage}}</span></div>
+        <p class="card-text"><small class="text-muted">{{checklist.remaining_items}}
+            {{'item' if checklist.remaining_items == 1 else 'items'}} remaining</small></p>
+    </a>
+  </div>
+</div>
+{% endfor %}
+</div>
 
 </div>
+
+
+
+<script>
+  $(function () { $('[data-toggle="popover"]').popover() })
+</script>
 
 {% endblock %}

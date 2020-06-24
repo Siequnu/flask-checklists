@@ -9,6 +9,9 @@ class Checklist (db.Model):
 	description = db.Column(db.String(500))
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	checklist_group_id = db.Column(db.Integer, db.ForeignKey('checklist_group.id'), nullable=True)
+	hue = db.Column(db.Integer)
+	saturation = db.Column(db.Integer)
+	lightness = db.Column(db.Integer)
 	
 	def __repr__(self):
 		return '<Checklist {}>'.format(self.id)
@@ -58,6 +61,12 @@ class Checklist (db.Model):
 			for item in relationships:
 				db.session.delete(item)
 				db.session.commit()
+
+	def set_hsl (self, hue, saturation, lightness):
+		self.hue = int (hue)
+		self.saturation = int (saturation)
+		self.lightness = int (lightness)
+		db.session.commit ()
 
 
 class ChecklistItem (db.Model):
@@ -160,7 +169,7 @@ class ChecklistGroup (db.Model):
 		else:
 			return int(total_completed_progress_percentage/number_of_checklists)
 
-	def get_remaining_items_count (self):
+	def get_group_remaining_items_count (self):
 		# How many checklists are associated with this group?
 		all_checklists = db.session.query(Checklist, ChecklistGroupRelationship).join(
 			ChecklistGroupRelationship, Checklist.id == ChecklistGroupRelationship.checklist_id).filter(
@@ -203,7 +212,7 @@ def get_all_checklist_group_info (checklist_group_id = False):
 
 		group_dict['checklists'] = checklists_array
 		group_dict['group_completed_progress_percentage'] = group.get_completed_progress_percentage ()
-		group_dict['remaining_items_count'] = group.get_remaining_items_count ()
+		group_dict['group_remaining_items_count'] = group.get_group_remaining_items_count ()
 		checklist_groups_array.append(group_dict)
 
 	

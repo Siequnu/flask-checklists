@@ -41,3 +41,35 @@ $('input:checkbox').change(function () {
 		}
 	});
 });
+
+
+// Save button click handler
+$('#save-colour').click(function () {
+    var myColor = colorWheel.color.hsl;
+    var hue = myColor.h
+    var saturation = myColor.s
+    var lightness = myColor.l
+
+	var checklist_id = $(this).attr("data-checklist-id")
+	
+    // PUT data via AJAX
+    $.ajax({
+      type: 'PUT',
+      url: '/api/v1/checklist/colour/' + checklist_id,
+      contentType: 'application/json',
+      headers: { 'key': config.apiKey },
+      data: JSON.stringify({
+        hue: hue,
+        saturation: saturation,
+        lightness: lightness
+      }),
+      error: function (jqXHR, textStatus, errorThrown) {
+        toastr.error(errorThrown);
+        toastr.error(textStatus);
+      },
+      success: function (data) {
+		toastr.success('Colour updated.');
+		$('#colour-picker-modal').modal('hide')
+      }
+    });
+  });

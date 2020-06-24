@@ -2,10 +2,30 @@
 
 <link rel="stylesheet" href="/static/css/progress-circle.css">
 
-{% block templateScripts %}
-<!-- Checklist submodule JS library -->
-<script src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
-{% endblock templateScripts %}
+
+
+<div class="modal" id="colour-picker-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change checklist colour</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="wheel" id="colorWheelDemo">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="save-colour" data-checklist-id="{{checklist.id}}" type=" button" class="btn btn-primary">Save
+          checklist colour</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <br>
 <div class="container">
@@ -20,15 +40,19 @@
   </div>
   <hr>
 
+
   <!-- Admin can add a new checklist-->
   {% if current_user.is_admin %}
   <a href="{{url_for('checklists.add_checklist_item', checklist_id = checklist.id)}}"><button
       class="btn btn-lg btn-outline-success"><i class="fa fa-plus-circle"></i> Add new item</button></a>
   <a href="{{url_for('checklists.remove_checklist',checklist_id = checklist.id)}}"><button
       class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> Delete checklist</button></a>
-  <br><br>
   {% endif %}
+  <button class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#colour-picker-modal"><i
+      class="fa fa-palette"></i> Change checklist
+    colour</button>
 
+  <br><br>
   <!-- Only show checklist items if they exist -->
   {% if checklist_info.checklist_items|length > 0 %}
   <div id="checklist-{{checklist.id}}" class="row">
@@ -64,5 +88,18 @@
   </div>
 </div>
 {% endif %}
+
+
+<!-- Checklist submodule JS library -->
+<script src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
+<script>
+  var colorWheel = new iro.ColorPicker("#colorWheelDemo", {
+    // options here
+  });
+
+  
+</script>
 
 {% endblock %}

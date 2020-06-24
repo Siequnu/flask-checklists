@@ -117,7 +117,7 @@ def remove_checklist_item(checklist_item_id):
 		checklist_item = ChecklistItem.query.get(checklist_item_id)
 		if checklist_item is None:
 			abort (404)
-		checklist_id = checklist_item.id
+		checklist_id = checklist_item.checklist_id
 		checklist_item.delete()
 		
 		flash ('Checklist item removed', 'success')
