@@ -16,6 +16,8 @@
     </div>
     <div class="col-12 col-lg-10">
       <h1><i class="fa fa-clipboard-list"></i> {{checklist_group.title}}</h1>
+      <h4>{{checklist_group.description}}</h4>
+      <em>created by {{checklist_group.created_by.username}}</em>
     </div>
   </div>
   <hr>
@@ -37,12 +39,11 @@
 
   <a href="{{url_for('checklists.unset_checklist_group',checklist_group_id = checklist_group.id)}}"><button
       class="btn btn-outline-warning"><i class="fa fa-trash"></i> Unset checklist group</button></a>
+  <a href="{{url_for('checklists.add_checklist_group',checklist_group_id = checklist_group.id)}}"><button
+        class="btn btn-outline-info"><i class="fa fa-edit"></i> Edit group details</button></a>
   <a href="{{url_for('checklists.delete_checklist_group',checklist_group_id = checklist_group.id)}}"><button
       class="btn btn-outline-danger float-right"><i class="fa fa-trash"></i> Delete checklist group</button></a>
-  <hr>
-  <p>{{checklist_group.description}}</p>
-  <p>created by {{checklist_group.user_id}}</p>
-  <hr>
+<br><br>
   {% endif %}
 
   <!-- Only show checklist items if they exist -->

@@ -44,11 +44,13 @@
   <!-- Admin can add a new checklist-->
   {% if current_user.is_admin %}
   <a href="{{url_for('checklists.add_checklist_item', checklist_id = checklist.id)}}"><button
-      class="btn btn-lg btn-outline-success"><i class="fa fa-plus-circle"></i> Add new item</button></a>
+      class="btn btn-outline-success"><i class="fa fa-plus-circle"></i> Add new item</button></a>
+  <a href="{{url_for('checklists.add_checklist',checklist_id = checklist.id)}}"><button
+    class="btn btn-outline-info"><i class="fa fa-edit"></i> Edit group details</button></a>
   <a href="{{url_for('checklists.remove_checklist',checklist_id = checklist.id)}}"><button
-      class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> Delete checklist</button></a>
+      class="btn btn-outline-danger"><i class="fa fa-trash"></i> Delete checklist</button></a>
   {% endif %}
-  <button class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#colour-picker-modal"><i
+  <button class="btn btn-outline-primary" data-toggle="modal" data-target="#colour-picker-modal"><i
       class="fa fa-palette"></i> Change checklist
     colour</button>
 

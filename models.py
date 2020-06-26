@@ -2,6 +2,8 @@ from flask import current_app
 from app import db
 from datetime import datetime
 
+from app.models import User
+
 class Checklist (db.Model):
 	__table_args__ = {'sqlite_autoincrement': True}
 	id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +20,9 @@ class Checklist (db.Model):
 
 	def add (self):
 		db.session.add(self)
+		db.session.commit()
+
+	def save (self):
 		db.session.commit()
 
 	def delete (self):
@@ -41,9 +46,9 @@ class Checklist (db.Model):
 			return int(len(completed_checklist_items)/len(all_checklist_items) * 100)
 
 	def get_remaining_items_count (self):
-		return len(ChecklistItem.query.filter_by(
+		return ChecklistItem.query.filter_by(
 			checklist_id = self.id).filter_by(
-			completed = True).all())
+			completed = False).count()
 
 	def add_to_checklist_group (self, checklist_group_id):
 		relationship = ChecklistGroupRelationship (
@@ -125,6 +130,9 @@ class ChecklistGroup (db.Model):
 
 	def add (self):
 		db.session.add(self)
+		db.session.commit()
+
+	def save (self):
 		db.session.commit()
 
 	def delete (self, delete_all_checklists = False):
@@ -213,6 +221,7 @@ def get_all_checklist_group_info (checklist_group_id = False):
 		group_dict['checklists'] = checklists_array
 		group_dict['group_completed_progress_percentage'] = group.get_completed_progress_percentage ()
 		group_dict['group_remaining_items_count'] = group.get_group_remaining_items_count ()
+		group_dict['created_by'] = User.query.get(group.user_id)
 		checklist_groups_array.append(group_dict)
 
 	

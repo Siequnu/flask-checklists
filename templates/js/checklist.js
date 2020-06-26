@@ -1,6 +1,6 @@
 // On changing a tick box, send API request to update database
 $('input:checkbox').change(function () {
-	var id = this.id.replace(/checklist-item-/g,'');
+	var checklist_item_id = this.id.replace(/checklist-item-/g,'');
 	var completed = this.checked;
 	// Very ugly. Is there a better way to traverse the DOM in an ascending fashion?
 	var checklist_id = $(this).parent().parent().parent().parent().parent().parent().prop('id').replace(/checklist-/g, '');
@@ -8,7 +8,7 @@ $('input:checkbox').change(function () {
 	// PUT data via AJAX
 	$.ajax({
 		type: 'PUT',
-		url: '/api/v1/checklist/item/' + id,
+		url: '/api/v1/checklist/item/' + checklist_item_id,
 		contentType: 'application/json',
 		headers: { 'key': config.apiKey },
 		data: JSON.stringify({
@@ -29,6 +29,7 @@ $('input:checkbox').change(function () {
 					$('#checklist-' + checklist_id + ' #progress-circle').removeClass();
 					$('#checklist-' + checklist_id + ' #progress-circle').addClass('progress-circle').addClass('progress-' + data.completed_percentage);
 					$('#checklist-' + checklist_id + ' #progress-circle span').text(data.completed_percentage);
+					console.log(data)
 
 					if (data.items_remaining == 1) {
 						$('#checklist-' + checklist_id + ' .text-muted').text(data.items_remaining + ' item remaining');

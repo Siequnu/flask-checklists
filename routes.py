@@ -39,19 +39,30 @@ def view_checklist(checklist_id):
 	abort(403)
 
 
-# Add a new checklist item
+# Add new or edit checklist item
 @bp.route("/add", methods = ['GET', 'POST'])
+@bp.route("/edit/<checklist_id>", methods = ['GET', 'POST'])
 @login_required
-def add_checklist():
+def add_checklist(checklist_id = False):
 	if app.models.is_admin(current_user.username):
-		form = ChecklistForm()
+		if checklist_id: 
+			checklist = Checklist.query.get(checklist_id)
+			if checklist_id is None: return (404)
+			form = ChecklistForm(obj = checklist)
+		else:
+			form = ChecklistForm()
 		if form.validate_on_submit():
-			checklist = Checklist(
-				title = form.title.data,
-				description = form.description.data,
-				user_id = current_user.id,
-			)
-			checklist.add()
+			if checklist_id: 
+				checklist.title = form.title.data,
+				checklist.description = form.description.data,
+				checklist.save()
+			else: 
+				checklist = Checklist(
+					title = form.title.data,
+					description = form.description.data,
+					user_id = current_user.id,
+				)
+				checklist.add()
 			flash ('Checklist saved', 'success')
 			return redirect(url_for('checklists.view_checklists'))
 		return render_template(
@@ -148,17 +159,29 @@ def toggle_item_status(checklist_item_id):
 
 # Add a new checklist group
 @bp.route("/group/add", methods = ['GET', 'POST'])
+@bp.route("/group/edit/<checklist_group_id>", methods = ['GET', 'POST'])
 @login_required
-def add_checklist_group():
+def add_checklist_group(checklist_group_id = False):
 	if app.models.is_admin(current_user.username):
-		form = ChecklistGroupForm()
+		if checklist_group_id: 
+			checklist_group = ChecklistGroup.query.get(checklist_group_id)
+			if checklist_group is None: return (404)
+			form = ChecklistGroupForm(obj = checklist_group)
+		else:
+			form = ChecklistGroupForm()
 		if form.validate_on_submit():
-			checklist_group = ChecklistGroup(
-				title = form.title.data,
-				description = form.description.data,
-				user_id = current_user.id,
-			)
-			checklist_group.add()
+			
+			if checklist_group_id: 
+				checklist_group.title = form.title.data,
+				checklist_group.description = form.description.data,
+				checklist_group.save()
+			else: 
+				checklist_group = ChecklistGroup(
+					title = form.title.data,
+					description = form.description.data,
+					user_id = current_user.id,
+				)
+				checklist_group.add()
 			flash ('Checklist group saved', 'success')
 			return redirect(url_for('checklists.view_checklists'))
 		return render_template('add_form.html', 
