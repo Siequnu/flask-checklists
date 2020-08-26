@@ -3,6 +3,9 @@
 <link rel="stylesheet" href="/static/css/progress-circle.css">
 
 {% block templateScripts %}
+<!-- JS config -->
+<script src="/static/js/config_elmOnline.js"></script>
+
 <!-- Checklist submodule JS library -->
 <script src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
 {% endblock templateScripts %}
