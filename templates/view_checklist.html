@@ -92,11 +92,12 @@
 {% endif %}
 
 <!-- JS config -->
-<script src="/static/js/config_elmOnline.js"></script>
+<script src="/static/js/config_{{config.APP_NAME}}.js"></script>
 
 <!-- Checklist submodule JS library -->
 <script src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
 
+<!-- Colour picker -->
 <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
 <script>
   var colorWheel = new iro.ColorPicker("#colorWheelDemo", {
