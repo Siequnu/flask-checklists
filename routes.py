@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, abort, current_app, session, Response
+from flask import render_template, flash, redirect, url_for, request, abort, current_app, session, Response, make_response
 from flask_login import current_user, login_required
 
 from . import bp, models
@@ -14,8 +14,9 @@ from app.models import User
 @login_required
 def load_js(filename):
 	filepath = 'js/' + filename
-	# is send_from_directory('/templates/js/', path) a safer approach?
-	return render_template(filepath)
+	response = make_response(render_template(filepath))
+	response.headers['Content-type'] = 'text/javascript'
+	return response
 
 # Main checklist overview
 @bp.route("/")
