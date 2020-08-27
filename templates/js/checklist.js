@@ -5,12 +5,15 @@ $('input:checkbox').change(function () {
 	// Very ugly. Is there a better way to traverse the DOM in an ascending fashion?
 	var checklist_id = $(this).parent().parent().parent().parent().parent().parent().prop('id').replace(/checklist-/g, '');
 
+	// Get the csrf token
+	const csrftoken = Cookies.get('_csrf_token');
+
 	// PUT data via AJAX
 	$.ajax({
 		type: 'PUT',
 		url: '/api/v1/checklist/item/' + checklist_item_id,
 		contentType: 'application/json',
-		headers: { 'key': config.apiKey },
+		headers: { 'key': config.apiKey, 'X-CSRFToken': csrftoken},
 		data: JSON.stringify({
 			completed: completed
 		}),
@@ -53,12 +56,15 @@ $('#save-colour').click(function () {
 
 	var checklist_id = $(this).attr("data-checklist-id")
 	
-    // PUT data via AJAX
+	// Get the csrf token
+	const csrftoken = Cookies.get('_csrf_token');
+	
+	// PUT data via AJAX
     $.ajax({
       type: 'PUT',
       url: '/api/v1/checklist/colour/' + checklist_id,
       contentType: 'application/json',
-      headers: { 'key': config.apiKey },
+      headers: {'key': config.apiKey, 'X-CSRFToken': csrftoken},
       data: JSON.stringify({
         hue: hue,
         saturation: saturation,

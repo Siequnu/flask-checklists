@@ -4,10 +4,11 @@
 
 {% block templateScripts %}
 <!-- JS config -->
-<script src="/static/js/config_{{config.APP_NAME}}.js"></script>
+<script type="text/javascript" nonce="{{ csp_nonce() }}" src="/static/js/config_{{config.APP_NAME}}.js"></script>
 
 <!-- Checklist submodule JS library -->
-<script src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
+<script type="text/javascript" nonce="{{ csp_nonce() }}"
+  src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
 {% endblock templateScripts %}
 
 <br>
@@ -43,10 +44,10 @@
   <a href="{{url_for('checklists.unset_checklist_group',checklist_group_id = checklist_group.id)}}"><button
       class="btn btn-outline-warning"><i class="fa fa-trash"></i> Unset checklist group</button></a>
   <a href="{{url_for('checklists.add_checklist_group',checklist_group_id = checklist_group.id)}}"><button
-        class="btn btn-outline-info"><i class="fa fa-edit"></i> Edit group details</button></a>
+      class="btn btn-outline-info"><i class="fa fa-edit"></i> Edit group details</button></a>
   <a href="{{url_for('checklists.delete_checklist_group',checklist_group_id = checklist_group.id)}}"><button
       class="btn btn-outline-danger float-right"><i class="fa fa-trash"></i> Delete checklist group</button></a>
-<br><br>
+  <br><br>
   {% endif %}
 
   <!-- Only show checklist items if they exist -->
@@ -87,4 +88,4 @@
   {% endfor %}
   {% endif %}
 
-{% endblock %}
+  {% endblock %}
