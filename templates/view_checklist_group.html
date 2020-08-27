@@ -4,10 +4,10 @@
 
 {% block templateScripts %}
 <!-- JS config -->
-<script type="text/javascript" nonce="{{ csp_nonce() }}" src="/static/js/config_{{config.APP_NAME}}.js"></script>
+<script type="text/javascript"   src="/static/js/config_{{config.APP_NAME}}.js"></script>
 
 <!-- Checklist submodule JS library -->
-<script type="text/javascript" nonce="{{ csp_nonce() }}"
+<script type="text/javascript"  
   src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
 {% endblock templateScripts %}
 

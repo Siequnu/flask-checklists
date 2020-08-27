@@ -92,13 +92,13 @@
 {% endif %}
 
 <!-- JS config -->
-<script type="text/javascript" nonce="{{ csp_nonce() }}" src="/static/js/config_{{config.APP_NAME}}.js"></script>
+<script type="text/javascript"   src="/static/js/config_{{config.APP_NAME}}.js"></script>
 
 <!-- Checklist submodule JS library -->
-<script type="text/javascript" nonce="{{ csp_nonce() }}" src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
+<script type="text/javascript"   src="{{url_for ('checklists.load_js', filename = 'checklist.js')}}"></script>
 
 <!-- Colour picker -->
-<script type="text/javascript" nonce="{{ csp_nonce() }}" src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
+<script type="text/javascript"   src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
 <script>
   var colorWheel = new iro.ColorPicker("#colorWheelDemo", {
     // options here
