@@ -32,7 +32,6 @@ $('input:checkbox').change(function () {
 					$('#checklist-' + checklist_id + ' #progress-circle').removeClass();
 					$('#checklist-' + checklist_id + ' #progress-circle').addClass('progress-circle').addClass('progress-' + data.completed_percentage);
 					$('#checklist-' + checklist_id + ' #progress-circle span').text(data.completed_percentage);
-					console.log(data)
 
 					if (data.items_remaining == 1) {
 						$('#checklist-' + checklist_id + ' .text-muted').text(data.items_remaining + ' item remaining');
