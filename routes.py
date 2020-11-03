@@ -26,6 +26,7 @@ def view_checklists():
 		checklists = models.get_all_checklist_info ()
 		checklist_groups = models.get_all_checklist_group_info ()
 		return render_template('view_checklists.html', checklists = checklists, checklist_groups = checklist_groups)
+	abort (403)
 
 
 # View an individual checklist
