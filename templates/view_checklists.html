@@ -10,12 +10,12 @@
   </div>
   <hr>
 
-  <a href="{{url_for('checklists.add_checklist_group')}}"><button class="btn btn-lg btn-outline-info"><i
+  <a href="{{url_for('checklists.add_checklist_group')}}"><button class="btn m-1 btn-outline-info"><i
         class="fa fa-layer-group"></i> Create new checklist group</button></a>
-  <a href="{{url_for('checklists.add_checklist')}}"><button class="btn btn-lg btn-outline-success"><i
+  <a href="{{url_for('checklists.add_checklist')}}"><button class="btn m-1 btn-outline-success"><i
         class="fa fa-plus-circle"></i> Add checklist</button></a>
 
-  <h2 class="mt-3">Checklist groups</h2>
+  <h3 class="mt-3">Checklist groups</h3>
   {% if checklist_groups == [] %}
   <p>You can group checklists to view aggregate data.</p>
   {% else %}
@@ -24,7 +24,7 @@
     <div class="col-12 col-md-6 mt-3 mb-3">
       <a class="text-dark" href="{{ url_for('checklists.view_checklist_group', checklist_group_id= group.id) }}">
         <div class="counter">
-          <h3>{{group.title}} <i class="fa fa-chevron-right"></i></h3>
+          <h5>{{group.title}} <i class="fa fa-chevron-right"></i></h5>
           <h6>{{group.description}}</h6>
       </a>
       <div class="container mt-3">
@@ -51,13 +51,13 @@
 </div>
 {% endif %}
 <hr>
-<h2>Checklists</h2>
+<h3>Checklists</h3>
 <div class="row text-center">
   {% for checklist in checklists %}
   <div class="col-12 col-md-4">
     <a class="text-dark" href="{{ url_for('checklists.view_checklist', checklist_id= checklist.id) }}">
       <div class="counter">
-        <h3>{{checklist.title}} <i class="fa fa-chevron-right"></i></h3>
+        <h5>{{checklist.title}} <i class="fa fa-chevron-right"></i></h5>
         <div class="progress-circle progress-{{checklist.completed_progress_percentage}}"
           style="background-image: none; color: #ffffff">
           <span>{{checklist.completed_progress_percentage}}</span></div>
@@ -74,7 +74,9 @@
 
 
 <script>
-  $(function () { $('[data-toggle="popover"]').popover() })
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
 </script>
 
 {% endblock %}
